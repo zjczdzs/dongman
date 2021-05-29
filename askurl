@@ -1,0 +1,8 @@
+import urllib.request,urllib.error
+def askurl(url):
+    headers={'*****'}
+    req=urllib.request.Request(url=url,headers=headers)
+    response=urllib.request.urlopen(req)
+    html=''
+    html=response.read().decode('utf-8')
+    return html
