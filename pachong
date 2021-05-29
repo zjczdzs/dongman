@@ -1,0 +1,52 @@
+import re
+import urllib.request,urllib.error
+import xlwt
+import sqlite3
+from bs4 import BeautifulSoup
+findLink = re.compile(r'data-original="(.*?)"')
+findname = re.compile(r'<img alt="(.*?)"')
+def getdate(url):
+    datelist=[]
+    for i in range(2, 11):
+        urll = url + str(i) + '.html'
+        html = getInfo(urll)
+        bs=BeautifulSoup(html,'html.parser')
+        content = bs.find_all(find_has_originLink)
+        content = str(content)
+        t_list = re.findall(findLink, content)
+        name = re.findall(findname, content)
+        for j in range(len(t_list)):
+            date=[]
+            date.append(t_list[j])
+            date.append(name[j])
+            datelist.append(date)
+    return datelist
+def savedate(datelist,savepath):
+    Workbook = xlwt.Workbook(encoding='utf-8',style_compression=0)  # 创建workbook对象
+    sheet=Workbook.add_sheet('sheet1',cell_overwrite_ok=True)#创建工作表
+    col=("图片","漫画名")
+    for i in range(0,2):
+        sheet.write(0,i,col[i])
+    for i in range(0,200):
+        date=datelist[i]
+        for j in range(0,2):
+            sheet.write(i+1,j,date[j])
+    Workbook.save(savepath)
+def getInfo(urll):
+    headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3868.400 QQBrowser/10.8.4394.400'}
+    req=urllib.request.Request(url=urll,headers=headers)
+    response=urllib.request.urlopen(req)
+    html=''
+    html=response.read().decode('utf-8')
+    return html
+def find_has_originLink(tag):
+    return tag.has_attr("data-original")
+def main():
+    url='https://www.4huxx59.com/pic/katong/index_'
+    datelist=getdate(url)
+    savepath=r'dongman.xls'
+    savedate(datelist,savepath)
+
+
+if __name__ == "__main__":
+    main()
