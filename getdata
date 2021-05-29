@@ -1,0 +1,16 @@
+def getdate(url):
+    datelist=[]
+    for i in range(2, 11):
+        urll = url + str(i) + '.html'
+        html = askurl(url)
+        bs=BeautifulSoup(html,'html.parser')
+        content = bs.find_all(find_has_originLink)
+        content = str(content)
+        t_list = re.findall(findLink, content)
+        name = re.findall(findname, content)
+        for j in range(len(t_list)):
+            date=[]
+            date.append(t_list[j])
+            date.append(name[j])
+            datelist.append(date)
+    return datelist
