@@ -1,0 +1,11 @@
+def savedate(datelist,savepath):
+    Workbook = xlwt.Workbook(encoding='utf-8',style_compression=0)  # 创建workbook对象
+    sheet=Workbook.add_sheet('sheet1',cell_overwrite_ok=True)#创建工作表
+    col=("图片","漫画名")
+    for i in range(0,2):
+        sheet.write(0,i,col[i])
+    for i in range(0,200):
+        date=datelist[i]
+        for j in range(0,2):
+            sheet.write(i+1,j,date[j])
+    Workbook.save(savepath)
