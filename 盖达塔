@@ -1,3 +1,8 @@
+import re
+findLink = re.compile(r'data-original="(.*?)"')
+findname = re.compile(r'<img alt="(.*?)"')
+def find_has_originLink(tag):
+    return tag.has_attr("data-original")
 def getdate(url):
     datelist=[]
     for i in range(2, 11):
